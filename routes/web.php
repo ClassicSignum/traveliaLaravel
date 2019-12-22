@@ -16,9 +16,7 @@ Route::get('/', function () {
 
 //travelia controller starts
 Route::get('/travelia','TraveliaController@index');
-Route::get('/travelia/destinations/{division}','TraveliaController@destinations');
 Route::post('/travelia','TraveliaController@registration');
-
 //travelia controller ends
 
 
@@ -53,7 +51,6 @@ Route::post('/admin/adminProfile','AdminController@adminProfilePost');
 Route::get('/admin/adminCustSalarySheet','AdminController@custSalarySheet');
 Route::get('/admin/adminCustSalarySheet','AdminController@custSalarySheetPost');
 Route::get('/admin/adminServiceCharge','AdminController@serviceCharge');
-Route::post('/admin/adminServiceCharge','AdminController@serviceChargePost');
 
 //admin controller ends
 

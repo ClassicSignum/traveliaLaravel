@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Cookie;
 use Validator;
 use App\User;
 use App\Userinfo;
-use App\Travelplace;
 
 class TraveliaController extends Controller
 {
@@ -89,12 +88,5 @@ class TraveliaController extends Controller
 
             return redirect('/travelia');
 
-    }
-
-    public function destinations(Request $req,$destination){
-        $place=Travelplace::where('division',$destination)
-                        ->get();
-
-        return view('travelia.traveliaDestinations')->with('result',$place);
     }
 }
