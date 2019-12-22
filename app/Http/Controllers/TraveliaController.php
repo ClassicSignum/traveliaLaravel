@@ -54,8 +54,8 @@ class TraveliaController extends Controller
             'phoneno'=>'required',
             'usertype'=>'required',
             'address'=>'required',
-            'password'=>'required|min:6|alpha_num|regex:/[A-Za-z]/|regex:/[0-9]/|confirmed'
-            
+            'password'=>'required|min:6|confirmed'
+            //|alpha_num|regex:/[A-Za-z]/|regex:/[0-9]/
             ]);
             if($validation->fails()){
                 $req->session()->put("correctreg","unsuccessful");
@@ -86,7 +86,7 @@ class TraveliaController extends Controller
             $user->save();
 
 
-            return redirect('/travelia');
+            return redirect('/home');
 
     }
 }

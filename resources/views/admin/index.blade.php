@@ -190,13 +190,15 @@
     <!-- admin dash part ends -->
 
 
-     <!-- floating message part starts -->
+    <!-- floating message part starts -->
   <div class="floating-chat">
-        <i class="fas fa-comments"></i>
+    <i class="fas fa-comments"></i>
+
+    <form action="" id="message-container">
+
         <div class="chat">
           <div class="header">
-           
-          <span class="title">
+            <span class="title">
               what's on your mind?
             </span>
             <button>
@@ -204,20 +206,18 @@
             </button>
     
           </div>
-          <ul class="messages">
-    
-            <!-- <li class="self">......... -___-</li> -->
-            <!-- <li class="self">Hello!</li> -->
-           
+        <ul class="messages">
           
         </ul>
           <div class="footer">
-            <div class="text-box" contenteditable="true" disabled="true"></div>
-            <button id="sendMessage1">send</button>
+            <!-- <div class="text-box" contenteditable="true" disabled="true"></div> -->
+            <input type="text" class="text-box" id="message-input">
+            <input type="submit" value="send" class="btn btn-outline-success" name="" id="sendMessage">
           </div>
         </div>
-      </div>
-      <!-- floating message part ends -->
+    </form>
+  </div>
+  <!-- floating message part ends -->
 
 
 
@@ -232,54 +232,27 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/Chart.min.js"></script>
     <script src="/js/floatmessage.js"></script>
-   
+    <script src="/socket.io/socket.io.js"></script>
 
+<script>
 
-    <script type="text/javascript">
-		jQuery(function($){
-			// Websocket
-			var websocket_server = new WebSocket("ws://localhost:8080/");
-			websocket_server.onopen = function(e) {
-				websocket_server.send(
-					JSON.stringify({
-						'type':'socket'
-						
-					})
-				);
-			};
-			websocket_server.onerror = function(e) {
-				// Errorhandling
-			}
-			websocket_server.onmessage = function(e)
-			{
-				var json = JSON.parse(e.data);
-                
-				switch(json.type) {
-					case 'chat':
-						// $('.messages').append("<li class='other'>"+json.msg+"</li>");
-						$('.messages').append(json.msg);
-						break;
-				}
-			}
-			
-            $('#sendMessage1').click(function(){
-            var chat_msg = $('.text-box').text();
-
-            // chat_msg="you "+chat_msg;
-					websocket_server.send(
-						JSON.stringify({
-							'type':'chat',
-							'chat_msg':chat_msg
-						})
-					);
-					// $(this).val('');
-                    $('.text-box').text('');
-          });
-		
-		});
-		</script>
-
-
+$(function () {
+    
+    var socket = io();
+    $('#message-container').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      $selfMsg=$('#message-input').val();
+      socket.emit('send-chat-message', $('#message-input').val());
+      $('.messages').append($('<li class="other">').text($selfMsg));
+      $('#message-input').val('');
+      return false;
+    });
+    socket.on('chat-message', function(msg){
+      $('.messages').append($('<li class="self" >').text("CUSTOMER CARE:"+msg));
+    });
+  });
+    
+</script>
     <!-- <script defer src="http://localhost:3000/admin/socket.io/socket.io.js"></script> -->
     <!-- <script src="../../script.js"></script> -->
     <!-- <script src="/js/script.js"></script> -->
@@ -292,10 +265,10 @@
         var myUser = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Traveller', 'Hotel Emp', 'Travel Guider', 'Care'],
+                labels: ['Customers', 'Hotel Emp', 'Travel Guider', 'Care'],
                 datasets: [{
                     label: 'User Catagory',
-                    data: [ "{{ $traveller }}" , "{{ $hotel }}", "{{ $guider }}","{{ $care }}"],
+                    data: [ "<%= users.Traveller %>" , "<%= users.HotelEmp %>", "<%= users.Guider %>","<%= users.CustomerCare %>"],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -338,7 +311,7 @@
                 labels: ['Dhaka', 'Rajshahi', 'Khulna', 'Chittagong', 'Barishal', 'Sylhet'],
                 datasets: [{
                     label: 'Places chart',
-                    data: ["{{ 0 }}", "{{ $raj }}", "{{ $khu }}", "{{ $chit }}", "{{ 0 }}", "{{ $syl }}"],
+                    data: ["<%= users.Dhaka %>", "<%= users.Rajshahi %>", "<%= users.Khulna %>", "<%= users.Chittagong %>", "<%= users.Barishal %>", "<%= users.Sylhet %>"],
                     backgroundColor: [
                         'rgba(180, 24, 180, 0.2)',
                         'rgba(0, 0, 255, 0.2)',

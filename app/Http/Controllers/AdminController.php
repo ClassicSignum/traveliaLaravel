@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Exports\Salarysheets;
-use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 use App\Travelplace;
 use App\Userinfo;
@@ -18,36 +16,7 @@ use App\Messagetocare;
 class AdminController extends Controller
 {
     public function index(){
-        $traveller=Userinfo::where('usertype','Traveller')->get();
-        $tracount=count($traveller);
-        
-        $traveller=Userinfo::where('usertype','Travel guider')->get();
-        $guidcount=count($traveller);
-        
-        $traveller=Userinfo::where('usertype','Hotel Emp')->get();
-        $hotelcount=count($traveller);
-
-        $traveller=Userinfo::where('usertype','customercare')->get();
-        $carecount=count($traveller);
-
-        $travelplace=Travelplace::where('division','sylhet')->get();
-        $sylcount=count($travelplace);
-        $travelplace=Travelplace::where('division','chittagong')->get();
-        $chicount=count($travelplace);
-
-        $travelplace=Travelplace::where('division','rajshahi')->get();
-        $rajcount=count($travelplace);
-        $travelplace=Travelplace::where('division','khulna')->get();
-        $khucount=count($travelplace);
-        
-        return view('admin.index')->with('traveller',$tracount)
-                                ->with('guider',$guidcount)
-                                ->with('care',$carecount)
-                                ->with('syl',$sylcount)
-                                ->with('raj',$rajcount)
-                                ->with('khu',$khucount)
-                                ->with('chit',$chicount)
-                                ->with('hotel',$hotelcount);
+        return view('admin.index');
     }
 
     public function adminTravellerinfo(Request $req){
@@ -301,26 +270,6 @@ class AdminController extends Controller
         $total=$servicecharge->sum('amount');
         return view('admin.adminServiceCharge')->with('service',$servicecharge)
                                             ->with('total',$total);
-    }
-
-
-    public function serviceChargePost(Request $req){
-
-        if($req->submit=="Excel"){
-
-            return Excel::download(new Salarysheets,'salary.xlsx');
-
-        }
-        else{
-
-            $servicecharge=new Servicecharge();
-            $servicecharge->usermail=$req->email;
-            $servicecharge->paidmonth=$req->month;
-            $servicecharge->amount=$req->amount;
-            $servicecharge->save();
-            
-            return redirect('/admin/adminServiceCharge');
-        }
     }
 
 

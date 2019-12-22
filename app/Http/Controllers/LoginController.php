@@ -47,7 +47,7 @@ class LoginController extends Controller
             }
         }
         else{
-            return redirect('/travelia');
+            return redirect('/home');
         }
 
     }

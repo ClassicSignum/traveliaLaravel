@@ -257,9 +257,6 @@
                                     <!-- <input type="label" value="TOTAL"  class="d-inline-block font-weight-bold mr-4"> -->
                                     <label for="" class=" font-weight-bold">Total:</label>
                                     <input type="text" class=" font-weight-bold" value="{{ $total }}" readonly>
-                                    <form action="" method="post">
-                                    <input type="submit" class="btn btn-secondary" name="submit" value="Excel">
-                                    </form>
                               
 
 
